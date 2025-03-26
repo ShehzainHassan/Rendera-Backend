@@ -9,7 +9,6 @@ const subscribeUser = async (req, res) => {
   }
 
   try {
-    // Check if email already exists
     const existingUser = await prisma.newsLetter.findUnique({
       where: { email },
     });
@@ -18,7 +17,6 @@ const subscribeUser = async (req, res) => {
       return res.status(409).json({ message: "Email already subscribed!" });
     }
 
-    // Insert email into the database
     await prisma.newsLetter.create({
       data: { email },
     });
