@@ -1,11 +1,17 @@
-const { PrismaClient } = require("@prisma/client");
+import { Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
-const subscribeUser = async (req, res) => {
+export const subscribeUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { email } = req.body;
 
   if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    return res.status(400).json({ message: "Invalid email address" });
+    res.status(400).json({ message: "Invalid email address" });
+    return;
   }
 
   try {
@@ -14,12 +20,11 @@ const subscribeUser = async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(409).json({ message: "Email already subscribed!" });
+      res.status(409).json({ message: "Email already subscribed!" });
+      return;
     }
 
-    await prisma.newsLetter.create({
-      data: { email },
-    });
+    await prisma.newsLetter.create({ data: { email } });
 
     res.status(200).json({ message: "Subscribed successfully!" });
   } catch (error) {
@@ -27,5 +32,3 @@ const subscribeUser = async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 };
-
-module.exports = { subscribeUser };
