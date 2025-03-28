@@ -1,0 +1,11 @@
+{
+    "errors": {
+        "invalid_email": "Invalid email address",
+        "email_exists": "Email already subscribed!",
+        "database_error": "Database error",
+        "unauthorized_access": "Unauthorized access"
+    },
+    "success": {
+        "subscription_successful": "Subscribed successfully!"
+    }
+}
